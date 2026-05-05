@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-Light.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-Book.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-Book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-BookItalic.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-BookItalic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-Medium.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-Bold.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-BoldItalic.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-BoldItalic.woff') format('woff');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('/fonts/Gotham/Gotham-Black.woff2') format('woff2'),
+        url('/fonts/Gotham/Gotham-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --layout-max-width: 1800px;
+    --brand-black-brand: #010101;
+    --brand-white: #ffffff;
+    --brand-gray-text: #bababa;
+    --brand-black-brand-2: #070707;
+    --brand-blue-brand: #526882;
+}
+
+@theme {
+    --font-sans: 'Gotham', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-black-brand: var(--brand-black-brand);
+    --color-white-brand: var(--brand-white);
+    --color-gray-text: var(--brand-gray-text);
+    --color-black-brand-2: var(--brand-black-brand-2);
+    --color-blue-brand: var(--brand-blue-brand);
+}
+
+html,
+body {
+    scroll-behavior: smooth;
+    background-color: var(--color-white-brand);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+}
+
+@keyframes noemaFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@layer utilities {
+    .max-w-layout {
+        max-width: var(--layout-max-width);
+    }
+
+    .animate-fade-soft {
+        animation: noemaFadeIn 0.9s ease forwards;
+    }
+}
