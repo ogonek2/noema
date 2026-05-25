@@ -37,11 +37,16 @@ const updateNavCount = (count) => {
         el.textContent = String(value);
     });
 
-    const cartBar = document.querySelector('[data-floating-cart]');
+    document.querySelectorAll('.nav-cart-desktop [data-cart-count]').forEach((el) => {
+        el.hidden = value <= 0;
+    });
+
+    const cartBar = document.querySelector('[data-mobile-cart-bar]');
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches;
 
     if (cartBar) {
-        cartBar.hidden = value <= 0;
-        document.body.classList.toggle('has-mobile-cart-bar', value > 0 && window.matchMedia('(max-width: 1023px)').matches);
+        cartBar.hidden = !isMobile || value <= 0;
+        document.body.classList.toggle('has-mobile-cart-bar', value > 0 && isMobile);
 
         const countEl = cartBar.querySelector('[data-floating-cart-count]');
 

@@ -51,8 +51,8 @@ return [
     ],
 
     'telegram' => [
-        // On local OpenServer/XAMPP, cURL may fail with "self-signed certificate in chain".
-        'verify_ssl' => filter_var(env('TELEGRAM_VERIFY_SSL', env('APP_ENV') === 'production'), FILTER_VALIDATE_BOOLEAN),
+        // Shared hosting often fails SSL verify to api.telegram.org — set TELEGRAM_VERIFY_SSL=false in .env
+        'verify_ssl' => filter_var(env('TELEGRAM_VERIFY_SSL', false), FILTER_VALIDATE_BOOLEAN),
     ],
 
     'bunny' => [

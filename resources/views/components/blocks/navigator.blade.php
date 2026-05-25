@@ -38,6 +38,15 @@
         </div>
 
         <div class="flex items-center gap-3 lg:gap-4">
+            <a href="{{ route('cart.index') }}" class="nav-cart-desktop hidden lg:inline-flex" aria-label="Кошик">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" class="h-[1.05rem] w-[1.05rem]">
+                    <path d="M7.5 8.5V7a4.5 4.5 0 0 1 9 0v1.5" stroke-linecap="round" />
+                    <path d="M6 8.5h12l-1.1 10.2H7.1L6 8.5z" stroke-linejoin="round" />
+                </svg>
+                <span class="nav-cart-desktop__label">Кошик</span>
+                <span class="nav-cart-desktop__badge" data-cart-count @if ($cartItems <= 0) hidden @endif>{{ $cartItems }}</span>
+            </a>
+
             <button id="nav-burger" type="button"
                 class="inline-flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-full border border-current lg:hidden"
                 aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobile-nav-drawer">
@@ -47,7 +56,7 @@
         </div>
     </div>
 
-    <a href="{{ route('cart.index') }}" class="mobile-cart-bar lg:hidden" data-floating-cart
+    <a href="{{ route('cart.index') }}" class="mobile-cart-bar" data-mobile-cart-bar
         @if ($cartItems <= 0) hidden @endif
         aria-label="Перейти в кошик">
         <span class="mobile-cart-bar__icon" aria-hidden="true">

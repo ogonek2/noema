@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class FormSettings extends Model
 {
@@ -114,15 +115,26 @@ class FormSettings extends Model
 
         try {
             return Crypt::decryptString($value);
-        } catch (\Throwable) {
-            return $value;
+        } catch (\Throwable $exception) {
+            Log::error('form_settings.telegram_bot_token decrypt failed', [
+                'message' => $exception->getMessage(),
+            ]);
+
+            return null;
         }
     }
 
     public function hasTelegram(): bool
     {
         return $this->telegram_enabled
-            && filled($this->telegram_bot_token)
+            && $this->hasValidTelegramBotToken()
             && filled($this->telegram_chat_id);
+    }
+
+    public function hasValidTelegramBotToken(): bool
+    {
+        $token = $this->telegram_bot_token;
+
+        return is_string($token) && preg_match('/^\d+:[A-Za-z0-9_-]{20,}$/', $token) === 1;
     }
 }

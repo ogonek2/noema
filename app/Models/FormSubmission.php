@@ -18,6 +18,7 @@ class FormSubmission extends Model
         'user_agent',
         'referer',
         'telegram_sent',
+        'telegram_error',
         'read_at',
     ];
 

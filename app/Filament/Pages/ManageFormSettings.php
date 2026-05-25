@@ -59,7 +59,7 @@ class ManageFormSettings extends Page implements HasForms
                             ->label('Токен бота')
                             ->password()
                             ->revealable()
-                            ->helperText('Отримайте у @BotFather. Порожнє поле при збереженні = токен не змінюється.')
+                            ->helperText('Отримайте у @BotFather. Порожнє поле при збереженні = токен не змінюється. На хостингу додайте в .env: TELEGRAM_VERIFY_SSL=false (якщо тест не проходить через SSL).')
                             ->visible(fn ($get): bool => (bool) $get('telegram_enabled')),
                         TextInput::make('telegram_chat_id')
                             ->label('Chat ID')
@@ -82,9 +82,28 @@ class ManageFormSettings extends Page implements HasForms
                 ->label('Тестове повідомлення')
                 ->icon('heroicon-o-bolt')
                 ->color('gray')
-                ->visible(fn (): bool => FormSettings::current()->hasTelegram())
+                ->visible(fn (): bool => (bool) FormSettings::current()->telegram_enabled)
                 ->action(function (): void {
                     $settings = FormSettings::current();
+
+                    if (! $settings->hasValidTelegramBotToken()) {
+                        Notification::make()
+                            ->title('Токен бота не налаштований')
+                            ->body('Збережіть дійсний токен з @BotFather. Якщо після переносу на сервер токен «зник» — введіть його заново (APP_KEY на сервері має збігатися з тим, під яким його шифрували).')
+                            ->danger()
+                            ->send();
+
+                        return;
+                    }
+
+                    if (blank($settings->telegram_chat_id)) {
+                        Notification::make()
+                            ->title('Не вказано Chat ID')
+                            ->danger()
+                            ->send();
+
+                        return;
+                    }
 
                     try {
                         $response = TelegramHttp::client()->post(

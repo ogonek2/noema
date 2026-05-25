@@ -201,9 +201,12 @@ class LandingFormService
             'referer' => $referer,
         ]);
 
-        if ($this->telegram->notify($submission, $schema, $validated)) {
-            $submission->forceFill(['telegram_sent' => true])->save();
-        }
+        $telegramSent = $this->telegram->notify($submission, $schema, $validated);
+
+        $submission->forceFill([
+            'telegram_sent' => $telegramSent,
+            'telegram_error' => $telegramSent ? null : $this->telegram->lastError(),
+        ])->save();
 
         return $submission;
     }

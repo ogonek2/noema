@@ -5,8 +5,7 @@ namespace App\Filament\Resources\FormSubmissions;
 use App\Filament\Resources\FormSubmissions\Pages\ListFormSubmissions;
 use App\Filament\Resources\FormSubmissions\Pages\ViewFormSubmission;
 use App\Models\FormSubmission;
-use App\Models\LandingPageSection;
-use App\Services\LandingFormService;
+use App\Support\FormSubmissionPayload;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
@@ -52,6 +51,7 @@ class FormSubmissionResource extends Resource
                 TextEntry::make('form_key')->label('Ключ')->copyable(),
                 TextEntry::make('landing_page_slug')
                     ->label('Сторінка')
+                    ->placeholder('Глобальна форма')
                     ->url(fn (FormSubmission $record): ?string => filled($record->landing_page_slug)
                         ? route('landing.show', $record->landing_page_slug)
                         : null)
@@ -68,12 +68,22 @@ class FormSubmissionResource extends Resource
                     ->getStateUsing(fn (FormSubmission $record): bool => $record->read_at !== null),
             ])->columns(3),
             Section::make('Дані форми')->schema([
-                TextEntry::make('payload')
-                    ->label('')
-                    ->formatStateUsing(fn (mixed $state, FormSubmission $record): string => self::formatPayloadHtml($record))
+                TextEntry::make('payload_display')
+                    ->hiddenLabel()
+                    ->state(fn (FormSubmission $record): string => FormSubmissionPayload::toHtml($record))
                     ->html()
                     ->columnSpanFull(),
             ]),
+            Section::make('Telegram')
+                ->schema([
+                    TextEntry::make('telegram_error')
+                        ->label('Помилка')
+                        ->placeholder('—')
+                        ->color('danger')
+                        ->columnSpanFull(),
+                ])
+                ->visible(fn (FormSubmission $record): bool => ! $record->telegram_sent && filled($record->telegram_error))
+                ->collapsed(false),
             Section::make('Технічні дані')->schema([
                 TextEntry::make('ip_address')->label('IP')->placeholder('—'),
                 TextEntry::make('referer')->label('Referer')->placeholder('—')->columnSpanFull(),
@@ -99,17 +109,17 @@ class FormSubmissionResource extends Resource
                 TextColumn::make('payload_preview')
                     ->label('Дані')
                     ->state(function (FormSubmission $record): string {
-                        $payload = $record->payloadArray();
+                        $rows = FormSubmissionPayload::rows($record);
 
-                        if ($payload === []) {
+                        if ($rows === []) {
                             return '—';
                         }
 
-                        $first = collect($payload)->first();
+                        $first = $rows[0];
 
-                        return is_bool($first)
-                            ? ($first ? 'Так' : 'Ні')
-                            : (string) $first;
+                        return $first['value'] !== '—'
+                            ? $first['value']
+                            : $first['label'];
                     })
                     ->limit(40),
                 IconColumn::make('telegram_sent')->label('TG')->boolean()->toggleable(),
@@ -138,39 +148,5 @@ class FormSubmissionResource extends Resource
             'index' => ListFormSubmissions::route('/'),
             'view' => ViewFormSubmission::route('/{record}'),
         ];
-    }
-
-    public static function formatPayloadHtml(FormSubmission $record): string
-    {
-        $payload = $record->payloadArray();
-
-        if ($payload === []) {
-            return '—';
-        }
-
-        $labels = [];
-        $section = $record->landing_page_section_id
-            ? LandingPageSection::query()->find($record->landing_page_section_id)
-            : null;
-
-        if ($section) {
-            $schema = app(LandingFormService::class)->normalizeFormContent($section->content ?? []);
-
-            foreach ($schema['fields'] as $field) {
-                $labels[$field['key']] = $field['label'];
-            }
-        }
-
-        return collect($payload)
-            ->map(function (mixed $value, string $key) use ($labels): string {
-                if (is_bool($value)) {
-                    $value = $value ? 'Так' : 'Ні';
-                }
-
-                $label = $labels[$key] ?? $key;
-
-                return '<strong>'.e($label).':</strong> '.e((string) $value);
-            })
-            ->implode('<br>');
     }
 }
