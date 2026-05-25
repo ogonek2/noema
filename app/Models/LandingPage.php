@@ -26,6 +26,8 @@ class LandingPage extends Model
         'title',
         'meta_title',
         'meta_description',
+        'meta_keywords',
+        'og_image_path',
         'is_published',
         'published_at',
         'show_navigator',

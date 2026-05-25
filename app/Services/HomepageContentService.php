@@ -184,7 +184,10 @@ class HomepageContentService
 
         foreach ($content as $key => $value) {
             if (in_array($key, $imageKeys, true)) {
-                $content[$key] = MediaUrl::normalizePath($value);
+                $normalized = MediaUrl::normalizePath($value);
+                $content[$key] = $key === 'fallback_image' && $normalized === 'images/cloth.png'
+                    ? null
+                    : $normalized;
 
                 continue;
             }
@@ -391,7 +394,7 @@ class HomepageContentService
                 'badge' => '[ NOEMA ]',
                 'description_fallback' => 'NOEMA створює медичний одяг, який витримує інтенсивні зміни: стійкість до прання, збереження форми та комфорт протягом усього дня.',
                 'made_with' => 'Made with Noema',
-                'fallback_image' => 'images/cloth.png',
+                'fallback_image' => null,
             ],
             HomepageBlockSlug::Statement => [
                 'brand_title' => 'NOEMA',

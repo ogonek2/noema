@@ -1,9 +1,6 @@
 @extends('layouts.store')
 
-@section('title', $catalog->name.' | NOEMA')
-
 @php
-    $metaDescription = $catalog->description;
     $breadcrumbs = [
         ['label' => 'Головна', 'url' => route('home')],
         ['label' => 'Каталог', 'url' => route('catalog.index')],

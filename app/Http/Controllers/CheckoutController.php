@@ -11,6 +11,7 @@ use App\Services\CartService;
 use App\Services\CheckoutService;
 use App\Services\LiqPayService;
 use App\Services\NovaPoshtaService;
+use App\Services\SiteSeoService;
 use App\Services\StorefrontService;
 use App\Support\PriceFormat;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,7 @@ class CheckoutController extends Controller
         private readonly LiqPayService $liqPay,
         private readonly StorefrontService $storefront,
         private readonly NovaPoshtaService $novaPoshta,
+        private readonly SiteSeoService $seo,
     ) {}
 
     public function index(): View|RedirectResponse
@@ -53,6 +55,7 @@ class CheckoutController extends Controller
             'shippingMethods' => ShippingMethod::cases(),
             'paymentMethods' => PaymentMethod::cases(),
             'footerCatalogs' => $this->storefront->activeCatalogs(),
+            'seo' => $this->seo->forUtilityPage('Оформлення замовлення', route('checkout.index')),
         ]);
     }
 
@@ -99,6 +102,7 @@ class CheckoutController extends Controller
             'order' => $order,
             'liqpay' => $form,
             'footerCatalogs' => $this->storefront->activeCatalogs(),
+            'seo' => $this->seo->forUtilityPage('Оплата замовлення '.$order->number, route('checkout.pay', $order), noindex: true),
         ]);
     }
 
@@ -110,6 +114,7 @@ class CheckoutController extends Controller
             'order' => $order,
             'iban' => config('checkout.iban'),
             'footerCatalogs' => $this->storefront->activeCatalogs(),
+            'seo' => $this->seo->forUtilityPage('Замовлення '.$order->number, route('checkout.success', $order), noindex: true),
         ]);
     }
 

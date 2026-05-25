@@ -1,7 +1,5 @@
 @extends('layouts.store')
 
-@section('title', 'Замовлення '.$order->number.' | NOEMA')
-
 @php
     use App\Enums\PaymentMethod;
     use App\Support\PriceFormat;

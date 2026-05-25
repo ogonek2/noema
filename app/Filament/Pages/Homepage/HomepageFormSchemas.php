@@ -244,7 +244,9 @@ class HomepageFormSchemas
                         TextInput::make('badge')->label('Бейдж'),
                         Textarea::make('description_fallback')->label('Абзац (fallback)')->rows(3)->columnSpanFull(),
                         TextInput::make('made_with')->label('Made with'),
-                        self::bunnyUpload('fallback_image', 'homepage/benefits')->label('Фото праворуч (без spotlight)'),
+                        self::bunnyUpload('fallback_image', 'homepage/benefits')
+                            ->label('Фото праворуч')
+                            ->helperText('Має пріоритет над фото spotlight-товару. Якщо порожньо — показується товар з вкладки «Загальне».'),
                     ])
                     ->columns(2)
                     ->columnSpanFull(),

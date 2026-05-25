@@ -1,13 +1,10 @@
 @extends('layouts.store')
 
-@section('title', $product->meta_title ?? $product->name . ' | NOEMA')
-
 @php
     use App\Enums\ProductRelationType;
     use App\Support\PriceFormat;
     use App\Support\RichContent;
 
-    $metaDescription = $product->meta_description ?? $product->short_description;
     $breadcrumbs = [
         ['label' => 'Головна', 'url' => route('home')],
         ['label' => 'Каталог', 'url' => route('catalog.index')],

@@ -100,6 +100,15 @@ class ProductResource extends Resource
                 Tab::make('SEO')->schema([
                     TextInput::make('meta_title')->label('Meta title')->columnSpanFull(),
                     Textarea::make('meta_description')->label('Meta description')->rows(3)->columnSpanFull(),
+                    Textarea::make('meta_keywords')
+                        ->label('Ключові слова')
+                        ->rows(2)
+                        ->helperText('Через кому. Порожньо — автогенерація з назви та каталогу.')
+                        ->columnSpanFull(),
+                    static::bunnyUpload('og_image_path', 'seo')
+                        ->label('OG-зображення')
+                        ->helperText('Порожньо — головне фото товару.')
+                        ->columnSpanFull(),
                 ]),
             ])->columnSpanFull(),
         ]);

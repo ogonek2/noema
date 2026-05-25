@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\SiteSeoService;
 use App\Services\StorefrontService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function __construct(private readonly StorefrontService $storefront) {}
+    public function __construct(
+        private readonly StorefrontService $storefront,
+        private readonly SiteSeoService $seo,
+    ) {}
 
     public function show(Product $product): View
     {
@@ -31,6 +35,7 @@ class ProductController extends Controller
             'similarProducts' => $this->storefront->similarProducts($product),
             'sizes' => $sizes,
             'initialPayload' => $this->storefront->productPayload($product),
+            'seo' => $this->seo->forProduct($product),
         ]);
     }
 

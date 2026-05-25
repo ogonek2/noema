@@ -7,6 +7,7 @@ use App\Filesystem\BunnyFilesystemAdapter;
 use App\Services\BunnyStorageService;
 use App\Services\CartService;
 use App\Services\HomepageContentService;
+use App\Services\SiteSeoService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(BunnyStorageService::class);
+        $this->app->singleton(SiteSeoService::class);
     }
 
     public function boot(): void

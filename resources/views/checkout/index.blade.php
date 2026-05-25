@@ -1,7 +1,5 @@
 @extends('layouts.store')
 
-@section('title', 'Оформлення замовлення | NOEMA')
-
 @php
     use App\Enums\PaymentMethod;
     use App\Enums\ShippingMethod;

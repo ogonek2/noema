@@ -1,7 +1,5 @@
 @extends('layouts.store')
 
-@section('title', 'Оплата '.$order->number.' | NOEMA')
-
 @section('store')
     <div class="checkout-pay mx-auto max-w-lg py-16 text-center" data-aos="fade-up">
         <p class="text-[0.68rem] uppercase tracking-[0.2em] text-black-brand/45">Перенаправлення на оплату</p>

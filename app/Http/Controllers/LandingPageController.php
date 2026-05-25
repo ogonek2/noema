@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LandingPage;
 use App\Services\HomepageContentService;
 use App\Services\LandingPageService;
+use App\Services\SiteSeoService;
 use App\Services\StorefrontService;
 use Illuminate\View\View;
 
@@ -14,6 +15,7 @@ class LandingPageController extends Controller
         private readonly LandingPageService $landings,
         private readonly StorefrontService $storefront,
         private readonly HomepageContentService $homepage,
+        private readonly SiteSeoService $seo,
     ) {}
 
     public function show(LandingPage $landingPage): View
@@ -29,6 +31,7 @@ class LandingPageController extends Controller
             'footerContent' => $landingPage->show_footer
                 ? $this->homepage->blockContent(\App\Enums\HomepageBlockSlug::Footer)
                 : [],
+            'seo' => $this->seo->forLanding($landingPage),
         ]);
     }
 }

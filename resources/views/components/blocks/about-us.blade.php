@@ -23,7 +23,7 @@
     data-aos="fade-up">
     <div class="mb-8 mx-auto flex max-w-layout flex-col-reverse items-center justify-between gap-4 px-5 text-center lg:px-8"
         data-aos="fade-up" data-aos-delay="120">
-        <h2 class="text-[5.75rem] font-thin uppercase leading-[0.9] tracking-[0.06em] text-black-brand lg:text-[7.4rem]">
+        <h2 class="text-[2.85rem] font-thin uppercase leading-[0.9] tracking-[0.06em] text-black-brand lg:text-[7.4rem]">
             {{ $titleLine1 }}<br>{{ $titleLine2 }}
         </h2>
         <p class="text-[0.9rem] tracking-[0.28em] text-black-brand">{{ $badge }}</p>

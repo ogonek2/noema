@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'NOEMA — преміальний медичний одяг')
-
 @section('content')
     <x-blocks.hero :content="$hero" />
     <x-blocks.about-us :catalogs="$catalogs" :content="$aboutUs" />

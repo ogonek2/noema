@@ -41,6 +41,8 @@ class Product extends Model
         'sort_order',
         'meta_title',
         'meta_description',
+        'meta_keywords',
+        'og_image_path',
     ];
 
     protected function casts(): array

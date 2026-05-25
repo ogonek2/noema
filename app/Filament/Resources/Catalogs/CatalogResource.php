@@ -63,6 +63,21 @@ class CatalogResource extends Resource
                     ->label('Активний')
                     ->default(true),
             ])->columns(2),
+
+            Section::make('SEO та Open Graph')
+                ->schema([
+                    TextInput::make('meta_title')->label('Meta title')->columnSpanFull(),
+                    Textarea::make('meta_description')->label('Meta description')->rows(3)->columnSpanFull(),
+                    Textarea::make('meta_keywords')
+                        ->label('Ключові слова')
+                        ->rows(2)
+                        ->helperText('Через кому')
+                        ->columnSpanFull(),
+                    static::bunnyUpload('og_image_path', 'seo')
+                        ->label('OG-зображення')
+                        ->helperText('Якщо порожньо — зображення каталогу або глобальне OG.')
+                        ->columnSpanFull(),
+                ]),
         ]);
     }
 

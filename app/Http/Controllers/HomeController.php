@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\HomepageBlockSlug;
 use App\Services\HomepageContentService;
+use App\Services\SiteSeoService;
 use App\Services\StorefrontService;
 use Illuminate\View\View;
 
@@ -12,6 +13,7 @@ class HomeController extends Controller
     public function __construct(
         private readonly StorefrontService $storefront,
         private readonly HomepageContentService $homepage,
+        private readonly SiteSeoService $seo,
     ) {}
 
     public function index(): View
@@ -34,6 +36,7 @@ class HomeController extends Controller
             'benefitsBlock' => $this->homepage->blockContent(HomepageBlockSlug::Benefits),
             'statement' => $this->homepage->blockContent(HomepageBlockSlug::Statement),
             'footerContent' => $this->homepage->blockContent(HomepageBlockSlug::Footer),
+            'seo' => $this->seo->forHome(),
         ]);
     }
 }

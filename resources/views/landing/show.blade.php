@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@section('title', $page->meta_title ?: $page->title)
-
-@push('head')
-    @if (filled($page->meta_description))
-        <meta name="description" content="{{ $page->meta_description }}">
-    @endif
-@endpush
-
 @section('content')
     @forelse ($sections as $section)
         <x-dynamic-component

@@ -1,7 +1,5 @@
 @extends('layouts.store')
 
-@section('title', 'Кошик | NOEMA')
-
 @php
     $breadcrumbs = [
         ['label' => 'Головна', 'url' => route('home')],

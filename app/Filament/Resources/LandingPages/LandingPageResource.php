@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LandingPages;
 
+use App\Filament\Concerns\UsesBunnyUpload;
 use App\Filament\Resources\LandingPages\Pages\CreateLandingPage;
 use App\Filament\Resources\LandingPages\Pages\EditLandingPage;
 use App\Filament\Resources\LandingPages\Pages\ListLandingPages;
@@ -24,6 +25,8 @@ use Illuminate\Support\Str;
 
 class LandingPageResource extends Resource
 {
+    use UsesBunnyUpload;
+
     protected static ?string $model = LandingPage::class;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-duplicate';
@@ -79,7 +82,7 @@ class LandingPageResource extends Resource
                 ])
                 ->columns(2),
 
-            Section::make('SEO')
+            Section::make('SEO та Open Graph')
                 ->schema([
                     TextInput::make('meta_title')
                         ->label('Meta title')
@@ -87,6 +90,13 @@ class LandingPageResource extends Resource
                     Textarea::make('meta_description')
                         ->label('Meta description')
                         ->rows(3)
+                        ->columnSpanFull(),
+                    Textarea::make('meta_keywords')
+                        ->label('Ключові слова')
+                        ->rows(2)
+                        ->columnSpanFull(),
+                    static::bunnyUpload('og_image_path', 'seo')
+                        ->label('OG-зображення')
                         ->columnSpanFull(),
                 ]),
         ]);

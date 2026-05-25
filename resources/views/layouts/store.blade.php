@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
-@push('head')
-    @isset($metaDescription)
-        <meta name="description" content="{{ $metaDescription }}">
-    @endisset
-@endpush
+{{-- SEO meta виводиться в layouts.app через $seo --}}
 
 @section('content')
     <section class="store-page w-full bg-white-brand pt-28 text-black-brand lg:pt-32" data-nav-theme="light">

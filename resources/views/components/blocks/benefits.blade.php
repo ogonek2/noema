@@ -21,7 +21,19 @@
     $badge = $content['badge'] ?? '[ NOEMA ]';
     $descriptionFallback = $content['description_fallback'] ?? 'NOEMA створює медичний одяг, який витримує інтенсивні зміни: стійкість до прання, збереження форми та комфорт протягом усього дня.';
     $madeWith = $content['made_with'] ?? 'Made with Noema';
-    $fallbackImage = MediaUrl::resolve($content['fallback_image'] ?? null, 'images/cloth.png');
+    $blockImagePath = MediaUrl::normalizePath($content['fallback_image'] ?? null);
+
+    if ($blockImagePath === 'images/cloth.png') {
+        $blockImagePath = null;
+    }
+
+    $blockImage = filled($blockImagePath) ? MediaUrl::resolve($blockImagePath) : null;
+    $spotlightImage = $spotlight?->imageUrl();
+    $defaultImage = MediaUrl::resolve(null, 'images/cloth.png');
+    $rightImage = $blockImage ?? $spotlightImage ?? $defaultImage;
+    $rightImageAlt = filled($blockImagePath)
+        ? 'NOEMA benefits visual'
+        : ($spotlight?->name ?? 'NOEMA benefits visual');
 @endphp
 
 <section id="benefits" class="w-full bg-black-brand text-white-brand py-16 lg:py-24 relative" data-nav-theme="dark"
@@ -60,17 +72,12 @@
             </div>
         </div>
         <div class="h-full w-auto absolute z-10 right-0 top-0 overflow-hidden bg-black-brand" data-aos="fade-left">
-            @if ($spotlight)
-                <x-ui.media-image
-                    :src="$spotlight->imageUrl()"
-                    :alt="$spotlight->name"
-                    wrapper-class="h-full min-h-[320px] w-auto"
-                    class="h-full w-auto object-cover opacity-80"
-                />
-            @else
-                <img src="{{ $fallbackImage }}" alt="NOEMA benefits visual"
-                    class="h-full w-auto object-cover opacity-80" loading="lazy">
-            @endif
+            <x-ui.media-image
+                :src="$rightImage"
+                :alt="$rightImageAlt"
+                wrapper-class="h-full min-h-[320px] w-auto"
+                class="h-full w-auto object-cover opacity-80"
+            />
             <div
                 class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,var(--brand-black-brand)_100%)]">
             </div>

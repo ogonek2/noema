@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddToCartRequest;
 use App\Http\Requests\UpdateCartItemRequest;
 use App\Services\CartService;
+use App\Services\SiteSeoService;
 use App\Services\StorefrontService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,7 @@ class CartController extends Controller
     public function __construct(
         private readonly CartService $cart,
         private readonly StorefrontService $storefront,
+        private readonly SiteSeoService $seo,
     ) {}
 
     public function index(): View
@@ -25,6 +27,7 @@ class CartController extends Controller
             'subtotal' => $this->cart->subtotal(),
             'subtotalFormatted' => $this->cart->formattedSubtotal(),
             'footerCatalogs' => $this->storefront->activeCatalogs(),
+            'seo' => $this->seo->forUtilityPage('Кошик', route('cart.index')),
         ]);
     }
 
