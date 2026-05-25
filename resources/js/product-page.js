@@ -406,20 +406,24 @@ export const initProductPage = () => {
         // ignore invalid JSON
     }
 
+    const showProductTab = (tabId) => {
+        document.querySelectorAll('.product-tab-btn').forEach((b) => {
+            const active = b.dataset.tab === tabId;
+            b.classList.toggle('text-black-brand', active);
+            b.classList.toggle('text-black-brand/40', !active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        document.querySelectorAll('.product-tab-panel').forEach((panel) => {
+            const active = panel.dataset.panel === tabId;
+            panel.classList.toggle('hidden', !active);
+            panel.hidden = false;
+        });
+    };
+
     document.querySelectorAll('.product-tab-btn').forEach((btn) => {
         btn.addEventListener('click', () => {
-            const id = btn.dataset.tab;
-            document.querySelectorAll('.product-tab-btn').forEach((b) => {
-                b.classList.remove('text-black-brand');
-                b.classList.add('text-black-brand/40');
-                b.setAttribute('aria-selected', 'false');
-            });
-            btn.classList.add('text-black-brand');
-            btn.classList.remove('text-black-brand/40');
-            btn.setAttribute('aria-selected', 'true');
-            document.querySelectorAll('.product-tab-panel').forEach((panel) => {
-                panel.hidden = panel.dataset.panel !== id;
-            });
+            showProductTab(btn.dataset.tab);
         });
     });
 };
