@@ -41,7 +41,7 @@ class VariantsRelationManager extends RelationManager
                 ->label('Довжина')
                 ->options(collect(ProductLength::cases())->mapWithKeys(fn (ProductLength $l) => [$l->value => $l->label()]))
                 ->default(ProductLength::Regular->value),
-            TextInput::make('price')->label('Ціна варіанту')->numeric()->prefix('$')->default(100),
+            TextInput::make('price')->label('Ціна варіанту')->numeric()->prefix('₴')->default(100),
             TextInput::make('stock_quantity')->label('Залишок')->numeric()->default(0),
             Toggle::make('is_active')->label('Активний')->default(true),
             TextInput::make('sort_order')->label('Сортування')->numeric()->default(0),
@@ -55,7 +55,7 @@ class VariantsRelationManager extends RelationManager
                 TextColumn::make('sku')->label('SKU'),
                 TextColumn::make('size')->label('Розмір'),
                 TextColumn::make('length')->label('Довжина'),
-                TextColumn::make('price')->label('Ціна')->money('USD'),
+                TextColumn::make('price')->label('Ціна')->money('UAH'),
                 TextColumn::make('stock_quantity')->label('Склад'),
                 IconColumn::make('is_active')->boolean(),
             ])

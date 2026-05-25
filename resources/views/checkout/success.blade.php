@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <dt class="text-black-brand/45">Сума</dt>
-                        <dd class="mt-0.5 font-medium">{{ PriceFormat::usd($order->total) }}</dd>
+                        <dd class="mt-0.5 font-medium">{{ PriceFormat::uah($order->total) }}</dd>
                     </div>
                 </dl>
             </div>
@@ -76,7 +76,7 @@
             </div>
             <div class="flex justify-between gap-4">
                 <dt class="text-black-brand/50">Сума</dt>
-                <dd>{{ PriceFormat::usd($order->total) }}</dd>
+                <dd>{{ PriceFormat::uah($order->total) }}</dd>
             </div>
             @if ($order->shipping_city_name || $order->shipping_address)
                 <div>
@@ -106,7 +106,7 @@
                         @endif
                         · {{ $item->size }} × {{ $item->quantity }}
                     </span>
-                    <span>{{ PriceFormat::usd($item->line_total) }}</span>
+                    <span>{{ PriceFormat::uah($item->line_total) }}</span>
                 </li>
             @endforeach
         </ul>

@@ -32,15 +32,15 @@ class CartService
 
     public function formattedSubtotal(): string
     {
-        return PriceFormat::usd($this->subtotal());
+        return PriceFormat::uah($this->subtotal());
     }
 
     /** @return Collection<int, array<string, mixed>> */
     public function enrichedItems(): Collection
     {
         return collect($this->items())->map(function (array $line): array {
-            $line['unit_price_formatted'] = PriceFormat::usd($line['unit_price']);
-            $line['line_total_formatted'] = PriceFormat::usd($line['line_total']);
+            $line['unit_price_formatted'] = PriceFormat::uah($line['unit_price']);
+            $line['line_total_formatted'] = PriceFormat::uah($line['line_total']);
 
             return $line;
         });
@@ -80,7 +80,7 @@ class CartService
                 $group['items'] = $group['items']->sortBy('group_index')->values();
                 $subtotal = (float) $group['items']->sum('line_total');
                 $group['subtotal'] = $subtotal;
-                $group['subtotal_formatted'] = PriceFormat::usd($subtotal);
+                $group['subtotal_formatted'] = PriceFormat::uah($subtotal);
             }
 
             return $group;

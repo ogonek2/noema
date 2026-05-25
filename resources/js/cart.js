@@ -1,10 +1,10 @@
 const MAX_BATCH = 50;
 const MIN_BATCH = 2;
 
-const formatUsd = (amount) => {
+const formatUah = (amount) => {
     const value = Number(amount) || 0;
 
-    return `$${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value)}`;
+    return `${new Intl.NumberFormat('uk-UA', { maximumFractionDigits: 0 }).format(value)} ₴`;
 };
 
 const escapeHtml = (value) =>
@@ -694,7 +694,7 @@ const updateBatchEntrySummaries = () => {
             ? readEntryCustomizationValues(entryEl)
             : entry.customizationValues || {};
 
-        summary.textContent = `${colorText}${sizeText}${extra} · ${formatUsd(calcUnitPriceFromValues(config, variant, values))}`;
+        summary.textContent = `${colorText}${sizeText}${extra} · ${formatUah(calcUnitPriceFromValues(config, variant, values))}`;
     });
 };
 
@@ -858,7 +858,7 @@ const updateModalTotal = () => {
         });
     }
 
-    totalEl.textContent = formatUsd(total);
+    totalEl.textContent = formatUah(total);
 };
 
 const renderCustomizationFields = (config) => {

@@ -67,7 +67,7 @@ class ManageCheckoutSettings extends Page implements HasForms
                     TextInput::make('default_shipping_cost')
                         ->label('Вартість доставки за замовчуванням')
                         ->numeric()
-                        ->prefix('$'),
+                        ->prefix('₴'),
                 ]),
                 Section::make('Примітки')->schema([
                     Textarea::make('notes')->rows(3)->columnSpanFull(),

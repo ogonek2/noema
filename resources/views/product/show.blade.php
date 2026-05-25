@@ -51,11 +51,11 @@
 
                 <div class="mt-6 flex flex-wrap items-baseline gap-3" id="product-price-wrap">
                     <p class="text-[1.35rem] tracking-[0.08em]" id="product-price">
-                        {{ PriceFormat::usd($product->price) }}
+                        {{ PriceFormat::uah($product->price) }}
                     </p>
                     <p class="text-[0.95rem] tracking-[0.08em] text-black-brand/35 line-through {{ $product->compare_at_price ? '' : 'hidden' }}"
                         id="product-compare-price">
-                        {{ $product->compare_at_price ? PriceFormat::usd($product->compare_at_price) : '' }}
+                        {{ $product->compare_at_price ? PriceFormat::uah($product->compare_at_price) : '' }}
                     </p>
                 </div>
 

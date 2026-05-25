@@ -26,7 +26,7 @@ class LatestOrdersWidget extends TableWidget
                 TextColumn::make('number')->label('№'),
                 TextColumn::make('customer_name')->label('Клієнт')->limit(20),
                 TextColumn::make('status')->label('Статус')->badge(),
-                TextColumn::make('total')->label('Сума')->money('USD'),
+                TextColumn::make('total')->label('Сума')->money('UAH'),
                 TextColumn::make('created_at')->label('Дата')->since(),
             ])
             ->recordUrl(fn (Order $record): string => OrderResource::getUrl('view', ['record' => $record]));

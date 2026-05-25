@@ -123,7 +123,7 @@ class SiteSeoService
                     'offers' => [
                         '@type' => 'Offer',
                         'url' => route('product.show', $product),
-                        'priceCurrency' => 'USD',
+                        'priceCurrency' => 'UAH',
                         'price' => (string) $product->price,
                         'availability' => 'https://schema.org/InStock',
                     ],

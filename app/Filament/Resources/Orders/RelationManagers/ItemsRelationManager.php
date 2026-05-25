@@ -29,8 +29,8 @@ class ItemsRelationManager extends RelationManager
                 TextColumn::make('color_name')->label('Колір'),
                 TextColumn::make('size')->label('Розмір'),
                 TextColumn::make('quantity')->label('К-сть'),
-                TextColumn::make('unit_price')->label('Ціна')->money('USD'),
-                TextColumn::make('line_total')->label('Сума')->money('USD'),
+                TextColumn::make('unit_price')->label('Ціна')->money('UAH'),
+                TextColumn::make('line_total')->label('Сума')->money('UAH'),
                 TextColumn::make('notes')->label('Нотатка')->limit(30),
             ])
             ->paginated(false);

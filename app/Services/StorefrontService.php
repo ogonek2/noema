@@ -225,9 +225,9 @@ class StorefrontService
             'name' => $product->name,
             'subtitle' => $product->subtitle,
             'short_description' => $product->short_description,
-            'price' => PriceFormat::usd($product->price),
+            'price' => PriceFormat::uah($product->price),
             'price_raw' => (float) $product->price,
-            'compare_at_price' => $product->compare_at_price ? PriceFormat::usd($product->compare_at_price) : null,
+            'compare_at_price' => $product->compare_at_price ? PriceFormat::uah($product->compare_at_price) : null,
             'gallery' => $product->galleryUrls(),
             'color' => [
                 'name' => $product->color_name,
@@ -296,7 +296,7 @@ class StorefrontService
             'color_hex' => $product->color_hex,
             'model_name' => $this->modelDisplayName($product),
             'price' => (float) $product->price,
-            'price_formatted' => PriceFormat::usd($product->price),
+            'price_formatted' => PriceFormat::uah($product->price),
             'url' => route('product.show', $product),
             'color_alternatives' => $this->cartColorAlternativesPayload($product),
             'variants' => $product->variants->map(fn ($variant) => [
@@ -305,7 +305,7 @@ class StorefrontService
                 'size' => $variant->size,
                 'length' => $variant->length?->value,
                 'price' => (float) ($variant->price ?? $product->price),
-                'price_formatted' => PriceFormat::usd($variant->price ?? $product->price),
+                'price_formatted' => PriceFormat::uah($variant->price ?? $product->price),
                 'stock' => $variant->stock_quantity,
             ])->values()->all(),
             'sizes' => $product->variants->pluck('size')->filter()->unique()->values()->all(),
@@ -317,7 +317,7 @@ class StorefrontService
                 'options' => $option->options ?? [],
                 'price_delta' => (float) $option->price_delta,
                 'price_delta_formatted' => $option->price_delta > 0
-                    ? '+'.PriceFormat::usd($option->price_delta)
+                    ? '+'.PriceFormat::uah($option->price_delta)
                     : null,
                 'is_required' => $option->is_required,
             ])->values()->all(),

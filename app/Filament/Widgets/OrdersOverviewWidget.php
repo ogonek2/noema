@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Services\OrderDashboardStatsService;
+use App\Support\PriceFormat;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -18,10 +19,10 @@ class OrdersOverviewWidget extends StatsOverviewWidget
 
         return [
             Stat::make('Замовлення сьогодні', (string) $stats['today_count'])
-                ->description('Сума: $'.number_format($stats['today_revenue'], 2))
+                ->description('Сума: '.PriceFormat::uah($stats['today_revenue']))
                 ->icon('heroicon-o-shopping-cart'),
             Stat::make('За тиждень', (string) $stats['week_count'])
-                ->description('Сума: $'.number_format($stats['week_revenue'], 2))
+                ->description('Сума: '.PriceFormat::uah($stats['week_revenue']))
                 ->icon('heroicon-o-chart-bar'),
             Stat::make('Очікують обробки', (string) $stats['awaiting_processing'])
                 ->color('warning')

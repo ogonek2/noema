@@ -97,7 +97,7 @@ class OrderResource extends Resource
                 TextEntry::make('status')->label('Статус')->badge(),
                 TextEntry::make('payment_status')->label('Оплата')->badge(),
                 TextEntry::make('payment_method')->label('Спосіб оплати'),
-                TextEntry::make('total')->label('Сума')->money('USD'),
+                TextEntry::make('total')->label('Сума')->money('UAH'),
                 TextEntry::make('created_at')->label('Створено')->dateTime('d.m.Y H:i'),
             ])->columns(3),
             Section::make('Клієнт')->schema([
@@ -146,7 +146,7 @@ class OrderResource extends Resource
                     ->label('Доставка')
                     ->formatStateUsing(fn (ShippingMethod $state): string => $state->label())
                     ->toggleable(),
-                TextColumn::make('total')->label('Сума')->money('USD')->sortable(),
+                TextColumn::make('total')->label('Сума')->money('UAH')->sortable(),
                 TextColumn::make('ttn_number')->label('ТТН')->placeholder('—')->toggleable(),
                 TextColumn::make('assignee.name')->label('Менеджер')->placeholder('—')->toggleable(),
                 TextColumn::make('created_at')->label('Дата')->dateTime('d.m.Y H:i')->sortable(),

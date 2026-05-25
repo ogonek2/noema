@@ -35,7 +35,7 @@
                                 {{ $product->name }}
                             </p>
                             <p class="mb-4 text-[0.78rem] tracking-[0.14em] text-white-brand/75">
-                                {{ PriceFormat::usd($product->price) }}
+                                {{ PriceFormat::uah($product->price) }}
                             </p>
                             <span class="block h-px w-16 bg-white-brand/70"></span>
                         </div>

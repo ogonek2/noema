@@ -167,7 +167,7 @@
         <div class="border-t border-black-brand/10 px-5 py-4 sm:px-6">
             <div class="mb-3 flex items-baseline justify-between gap-3">
                 <span class="text-[0.68rem] uppercase tracking-[0.16em] text-black-brand/45">Орієнтовно</span>
-                <span class="text-[1.05rem] tracking-[0.08em] text-black-brand" data-cart-modal-total>$0</span>
+                <span class="text-[1.05rem] tracking-[0.08em] text-black-brand" data-cart-modal-total>0 ₴</span>
             </div>
             <button type="submit" form="" disabled
                 class="cart-modal-submit w-full border border-black-brand bg-black-brand px-6 py-4 text-xs font-medium uppercase tracking-[0.16em] text-white-brand transition enabled:hover:bg-white-brand enabled:hover:text-black-brand disabled:cursor-not-allowed disabled:opacity-40"

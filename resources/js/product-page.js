@@ -1,8 +1,9 @@
 import { mountProductGallery } from './product-gallery';
 
-const formatUsd = (amount) => {
+const formatUah = (amount) => {
     const value = Number(amount) || 0;
-    return `$${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value)}`;
+
+    return `${new Intl.NumberFormat('uk-UA', { maximumFractionDigits: 0 }).format(value)} ₴`;
 };
 
 const setText = (id, value, fallback = '') => {
@@ -90,7 +91,7 @@ const renderSizes = (sizes, variants, basePrice) => {
             variants[0];
         if (match) {
             setText('product-variant-sku', `SKU: ${match.sku}`);
-            setText('product-price', formatUsd(match.price || basePrice));
+            setText('product-price', formatUah(match.price || basePrice));
         }
     };
 

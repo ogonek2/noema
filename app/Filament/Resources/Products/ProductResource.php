@@ -77,8 +77,8 @@ class ProductResource extends Resource
                     TextInput::make('subtitle')->label('Підзаголовок')->columnSpanFull(),
                     Textarea::make('short_description')->label('Короткий опис')->rows(3)->columnSpanFull(),
                     RichEditor::make('description')->label('Опис')->columnSpanFull(),
-                    TextInput::make('price')->label('Ціна')->numeric()->prefix('$')->required()->default(100),
-                    TextInput::make('compare_at_price')->label('Стара ціна')->numeric()->prefix('$'),
+                    TextInput::make('price')->label('Ціна')->numeric()->prefix('₴')->required()->default(100),
+                    TextInput::make('compare_at_price')->label('Стара ціна')->numeric()->prefix('₴'),
                     static::bunnyUpload('primary_image_path', 'products')
                         ->label('Головне фото')
                         ->columnSpanFull(),
@@ -124,7 +124,7 @@ class ProductResource extends Resource
                 TextColumn::make('catalog.name')->label('Каталог')->sortable(),
                 TextColumn::make('color_name')->label('Колір'),
                 TextColumn::make('model_slug')->label('Модель'),
-                TextColumn::make('price')->label('Ціна')->money('USD'),
+                TextColumn::make('price')->label('Ціна')->money('UAH'),
                 TextColumn::make('variants_count')->counts('variants')->label('Варіанти'),
                 IconColumn::make('is_active')->label('Активний')->boolean(),
                 IconColumn::make('is_featured')->label('Топ')->boolean(),

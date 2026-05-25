@@ -53,7 +53,7 @@
                     <p class="mt-1 text-[0.65rem] tracking-[0.14em] text-white-brand/55">{{ $product->color_name }}</p>
                 @endif
                 <p class="mt-3 text-[0.82rem] tracking-[0.14em] text-white-brand">
-                    {{ \App\Support\PriceFormat::usd($product->price) }}
+                    {{ \App\Support\PriceFormat::uah($product->price) }}
                 </p>
             </div>
         @endif
