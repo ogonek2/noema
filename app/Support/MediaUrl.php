@@ -13,11 +13,25 @@ class MediaUrl
         }
 
         if (is_string($path)) {
-            if (str_starts_with($path, 'livewire-file:')) {
+            $trimmed = trim($path);
+
+            if ($trimmed === '' || $trimmed === '[]') {
                 return null;
             }
 
-            return $path;
+            if (str_starts_with($trimmed, 'livewire-file:')) {
+                return null;
+            }
+
+            if (str_starts_with($trimmed, '[') || str_starts_with($trimmed, '{')) {
+                $decoded = json_decode($trimmed, true);
+
+                if (is_array($decoded)) {
+                    return self::normalizePath($decoded);
+                }
+            }
+
+            return $trimmed;
         }
 
         if (! is_array($path)) {
@@ -25,10 +39,14 @@ class MediaUrl
         }
 
         if (isset($path['path']) && is_string($path['path'])) {
-            return $path['path'];
+            return self::normalizePath($path['path']);
         }
 
-        foreach ($path as $value) {
+        foreach ($path as $key => $value) {
+            if ($key === 's' || $value === 'arr') {
+                continue;
+            }
+
             if (is_string($value) && str_starts_with($value, 'livewire-file:')) {
                 continue;
             }

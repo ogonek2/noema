@@ -2,8 +2,10 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\NormalizesBunnyUploads;
 use App\Filament\Concerns\UsesBunnyUpload;
 use App\Models\SiteSeoSettings;
+use App\Support\MediaUrl;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -17,6 +19,7 @@ use Filament\Schemas\Schema;
 class ManageSiteSeo extends Page implements HasForms
 {
     use InteractsWithForms;
+    use NormalizesBunnyUploads;
     use UsesBunnyUpload;
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
@@ -35,7 +38,13 @@ class ManageSiteSeo extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill(SiteSeoSettings::current()->toArray());
+        $settings = SiteSeoSettings::current();
+        $raw = $settings->toArray();
+        $data = $this->formDataForBunnyUploads($raw, SiteSeoSettings::UPLOAD_KEYS);
+
+        $this->repairCorruptedUploads($settings, $raw, $data);
+
+        $this->form->fill($data);
     }
 
     public function form(Schema $schema): Schema
@@ -126,10 +135,40 @@ class ManageSiteSeo extends Page implements HasForms
             Action::make('save')
                 ->label('Зберегти')
                 ->action(function (): void {
-                    SiteSeoSettings::current()->fill($this->data)->save();
+                    $settings = SiteSeoSettings::current();
+                    $data = $this->persistBunnyUploads(
+                        $this->form->getState(),
+                        SiteSeoSettings::UPLOAD_KEYS,
+                        $settings->toArray(),
+                    );
+
+                    $settings->fill($data)->save();
+
+                    $this->form->fill($this->formDataForBunnyUploads($settings->fresh()->toArray(), SiteSeoSettings::UPLOAD_KEYS));
 
                     Notification::make()->title('SEO-налаштування збережено')->success()->send();
                 }),
         ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $raw
+     * @param  array<string, mixed>  $normalized
+     */
+    private function repairCorruptedUploads(SiteSeoSettings $settings, array $raw, array $normalized): void
+    {
+        $dirty = false;
+
+        foreach (SiteSeoSettings::UPLOAD_KEYS as $key) {
+            if (MediaUrl::normalizePath($raw[$key] ?? null) !== ($normalized[$key] ?? null)) {
+                $dirty = true;
+            }
+        }
+
+        if (! $dirty) {
+            return;
+        }
+
+        $settings->fill(collect($normalized)->only(SiteSeoSettings::UPLOAD_KEYS)->all())->save();
     }
 }

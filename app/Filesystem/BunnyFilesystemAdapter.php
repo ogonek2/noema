@@ -3,6 +3,7 @@
 namespace App\Filesystem;
 
 use App\Services\BunnyStorageService;
+use App\Support\MediaUrl;
 use League\Flysystem\Config;
 use League\Flysystem\DirectoryAttributes;
 use League\Flysystem\FileAttributes;
@@ -23,8 +24,17 @@ class BunnyFilesystemAdapter implements FilesystemAdapter
         protected BunnyStorageService $bunny,
     ) {}
 
+    protected function isValidPath(string $path): bool
+    {
+        return filled(MediaUrl::normalizePath($path));
+    }
+
     public function fileExists(string $path): bool
     {
+        if (! $this->isValidPath($path)) {
+            return false;
+        }
+
         try {
             return $this->bunny->exists($path);
         } catch (\Throwable) {
@@ -65,6 +75,10 @@ class BunnyFilesystemAdapter implements FilesystemAdapter
 
     public function read(string $path): string
     {
+        if (! $this->isValidPath($path)) {
+            throw UnableToReadFile::fromLocation($path, 'Invalid or empty Bunny path.');
+        }
+
         try {
             return $this->bunny->download($path);
         } catch (\Throwable $exception) {
@@ -120,6 +134,10 @@ class BunnyFilesystemAdapter implements FilesystemAdapter
 
     public function fileSize(string $path): FileAttributes
     {
+        if (! $this->isValidPath($path)) {
+            return new FileAttributes($path, 0);
+        }
+
         try {
             return new FileAttributes($path, strlen($this->read($path)));
         } catch (\Throwable $exception) {

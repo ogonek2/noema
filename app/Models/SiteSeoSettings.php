@@ -2,10 +2,35 @@
 
 namespace App\Models;
 
+use App\Support\MediaUrl;
 use Illuminate\Database\Eloquent\Model;
 
 class SiteSeoSettings extends Model
 {
+    /** @var list<string> */
+    public const UPLOAD_KEYS = [
+        'og_default_image',
+        'favicon_path',
+        'apple_touch_icon_path',
+    ];
+
+    protected static function booted(): void
+    {
+        static::retrieved(function (self $model): void {
+            $model->normalizeUploadAttributes();
+        });
+
+        static::saving(function (self $model): void {
+            $model->normalizeUploadAttributes();
+        });
+    }
+
+    public function normalizeUploadAttributes(): void
+    {
+        foreach (self::UPLOAD_KEYS as $key) {
+            $this->attributes[$key] = MediaUrl::normalizePath($this->attributes[$key] ?? null);
+        }
+    }
     protected $fillable = [
         'site_name',
         'title_separator',
