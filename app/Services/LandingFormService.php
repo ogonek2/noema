@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\LandingFormFieldType;
 use App\Enums\LandingSectionType;
+use App\Models\FormSettings;
 use App\Models\FormSubmission;
 use App\Models\LandingPage;
 use App\Models\LandingPageSection;
@@ -58,8 +59,20 @@ class LandingFormService
         return $content;
     }
 
-    /** @return array{section: LandingPageSection, page: LandingPage, schema: array<string, mixed>}|null */
+    /** @return array{section: ?LandingPageSection, page: ?LandingPage, schema: array<string, mixed>}|null */
     public function findFormByKey(string $formKey): ?array
+    {
+        $landing = $this->findLandingFormByKey($formKey);
+
+        if ($landing !== null) {
+            return $landing;
+        }
+
+        return $this->findGlobalFormByKey($formKey);
+    }
+
+    /** @return array{section: LandingPageSection, page: LandingPage, schema: array<string, mixed>}|null */
+    private function findLandingFormByKey(string $formKey): ?array
     {
         $section = LandingPageSection::query()
             ->where('type', LandingSectionType::Form)
@@ -87,6 +100,28 @@ class LandingFormService
             'section' => $section,
             'page' => $page,
             'schema' => $schema,
+        ];
+    }
+
+    /** @return array{section: null, page: null, schema: array<string, mixed>}|null */
+    private function findGlobalFormByKey(string $formKey): ?array
+    {
+        $settings = FormSettings::current();
+
+        if (! $settings->consultation_enabled) {
+            return null;
+        }
+
+        $key = $settings->consultation_form_key ?: 'consultation';
+
+        if ($formKey !== $key) {
+            return null;
+        }
+
+        return [
+            'section' => null,
+            'page' => null,
+            'schema' => $settings->consultationSchema(),
         ];
     }
 
@@ -148,18 +183,18 @@ class LandingFormService
     public function storeSubmission(
         array $schema,
         array $validated,
-        LandingPage $page,
-        LandingPageSection $section,
+        ?LandingPage $page,
+        ?LandingPageSection $section,
         ?string $ip,
         ?string $userAgent,
         ?string $referer,
     ): FormSubmission {
         $submission = FormSubmission::query()->create([
             'form_key' => $schema['form_key'],
-            'landing_page_id' => $page->id,
-            'landing_page_section_id' => $section->id,
-            'landing_page_slug' => $page->slug,
-            'form_title' => $schema['title'] ?? $page->title,
+            'landing_page_id' => $page?->id,
+            'landing_page_section_id' => $section?->id,
+            'landing_page_slug' => $page?->slug,
+            'form_title' => $schema['title'] ?? $page?->title ?? 'Консультація',
             'payload' => $validated,
             'ip_address' => $ip,
             'user_agent' => $userAgent,

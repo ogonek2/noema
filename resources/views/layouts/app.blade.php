@@ -26,6 +26,11 @@
         <x-product.lightbox />
         <x-cart.modal />
 
+        @if ($consultationEnabled ?? false)
+            <x-storefront.floating-dock />
+            <x-storefront.consultation-modal :schema="$consultationSchema ?? []" />
+        @endif
+
         <p class="cart-toast pointer-events-none fixed bottom-6 left-1/2 z-[120] -translate-x-1/2 translate-y-4 border border-black-brand/10 bg-white-brand px-5 py-3 text-[0.72rem] uppercase tracking-[0.14em] text-black-brand opacity-0 shadow-lg transition duration-300"
             data-cart-toast role="status" aria-live="polite"></p>
 

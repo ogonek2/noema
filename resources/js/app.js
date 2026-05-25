@@ -1,5 +1,6 @@
 import './bootstrap';
 import { initCart } from './cart';
+import { initFloatingDock } from './floating-dock';
 import { initProductPage } from './product-page';
 import { initCatalogCardHover } from './catalog-card-hover';
 import AOS from 'aos';
@@ -20,6 +21,7 @@ const initMediaShells = () => {
 document.addEventListener('DOMContentLoaded', () => {
     initMediaShells();
     initCart();
+    initFloatingDock();
     initProductPage();
     initCatalogCardHover();
 
@@ -436,6 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         nav.classList.toggle('backdrop-blur-xl', compact);
         nav.classList.toggle('border-transparent', false);
+        nav.classList.toggle('is-light', sectionIsLight || atTop);
         navLogo?.classList.toggle('invert', !sectionIsLight && !atTop);
     };
 

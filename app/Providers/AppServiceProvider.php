@@ -7,8 +7,10 @@ use App\Filesystem\BunnyFilesystemAdapter;
 use App\Services\BunnyStorageService;
 use App\Services\CartService;
 use App\Services\HomepageContentService;
+use App\Models\FormSettings;
 use App\Services\SiteSeoService;
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +32,25 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'cartCount' => app(CartService::class)->count(),
                 'navContent' => $homepage->blockContent(HomepageBlockSlug::Navigator),
+            ]);
+        });
+
+        View::composer('layouts.app', function ($view): void {
+            $consultationEnabled = false;
+            $consultationSchema = [];
+
+            if (Schema::hasTable('form_settings')) {
+                $settings = FormSettings::current();
+                $consultationEnabled = (bool) $settings->consultation_enabled;
+                $consultationSchema = $consultationEnabled
+                    ? $settings->consultationSchema()
+                    : [];
+            }
+
+            $view->with([
+                'cartCount' => app(CartService::class)->count(),
+                'consultationEnabled' => $consultationEnabled,
+                'consultationSchema' => $consultationSchema,
             ]);
         });
 

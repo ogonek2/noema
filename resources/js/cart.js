@@ -31,9 +31,42 @@ const qs = (sel, root = document) => root.querySelector(sel);
 const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 const updateNavCount = (count) => {
+    const value = Number(count) || 0;
+
     document.querySelectorAll('[data-cart-count]').forEach((el) => {
-        el.textContent = String(count);
+        el.textContent = String(value);
     });
+
+    const cartBar = document.querySelector('[data-floating-cart]');
+
+    if (cartBar) {
+        cartBar.hidden = value <= 0;
+        document.body.classList.toggle('has-mobile-cart-bar', value > 0 && window.matchMedia('(max-width: 1023px)').matches);
+
+        const countEl = cartBar.querySelector('[data-floating-cart-count]');
+
+        if (countEl) {
+            countEl.textContent = String(value);
+        }
+
+        const labelEl = cartBar.querySelector('[data-floating-cart-label]');
+
+        if (labelEl) {
+            const mod10 = value % 10;
+            const mod100 = value % 100;
+            let word = 'товарів';
+
+            if (mod10 === 1 && mod100 !== 11) {
+                word = 'товар';
+            } else if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+                word = 'товари';
+            }
+
+            labelEl.textContent = word;
+        }
+    }
+
+    document.dispatchEvent(new CustomEvent('cart:count-updated', { detail: { count: value } }));
 };
 
 const fetchSummary = async () => {
@@ -1214,10 +1247,29 @@ const bindTriggers = () => {
     });
 };
 
+const syncMobileCartBarFromDom = () => {
+    const countEl = document.querySelector('[data-floating-cart-count]');
+
+    if (!countEl) {
+        return;
+    }
+
+    updateNavCount(Number(countEl.textContent) || 0);
+};
+
 export const initCart = () => {
     bindModal();
     bindTriggers();
+    syncMobileCartBarFromDom();
     fetchSummary();
+
+    window.addEventListener('resize', () => {
+        const countEl = document.querySelector('[data-floating-cart-count]');
+
+        if (countEl) {
+            updateNavCount(Number(countEl.textContent) || 0);
+        }
+    });
 
     document.addEventListener('cart:added', (event) => {
         const message = event.detail?.message;
