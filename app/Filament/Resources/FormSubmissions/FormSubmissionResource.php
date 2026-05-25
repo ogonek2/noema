@@ -70,36 +70,7 @@ class FormSubmissionResource extends Resource
             Section::make('Дані форми')->schema([
                 TextEntry::make('payload')
                     ->label('')
-                    ->formatStateUsing(function (?array $state, FormSubmission $record): string {
-                        if (empty($state)) {
-                            return '—';
-                        }
-
-                        $labels = [];
-                        $section = $record->landing_page_section_id
-                            ? LandingPageSection::query()->find($record->landing_page_section_id)
-                            : null;
-
-                        if ($section) {
-                            $schema = app(LandingFormService::class)->normalizeFormContent($section->content ?? []);
-
-                            foreach ($schema['fields'] as $field) {
-                                $labels[$field['key']] = $field['label'];
-                            }
-                        }
-
-                        return collect($state)
-                            ->map(function (mixed $value, string $key) use ($labels): string {
-                                if (is_bool($value)) {
-                                    $value = $value ? 'Так' : 'Ні';
-                                }
-
-                                $label = $labels[$key] ?? $key;
-
-                                return '<strong>'.e($label).':</strong> '.e((string) $value);
-                            })
-                            ->implode('<br>');
-                    })
+                    ->formatStateUsing(fn (mixed $state, FormSubmission $record): string => self::formatPayloadHtml($record))
                     ->html()
                     ->columnSpanFull(),
             ]),
@@ -128,7 +99,7 @@ class FormSubmissionResource extends Resource
                 TextColumn::make('payload_preview')
                     ->label('Дані')
                     ->state(function (FormSubmission $record): string {
-                        $payload = $record->payload ?? [];
+                        $payload = $record->payloadArray();
 
                         if ($payload === []) {
                             return '—';
@@ -167,5 +138,39 @@ class FormSubmissionResource extends Resource
             'index' => ListFormSubmissions::route('/'),
             'view' => ViewFormSubmission::route('/{record}'),
         ];
+    }
+
+    public static function formatPayloadHtml(FormSubmission $record): string
+    {
+        $payload = $record->payloadArray();
+
+        if ($payload === []) {
+            return '—';
+        }
+
+        $labels = [];
+        $section = $record->landing_page_section_id
+            ? LandingPageSection::query()->find($record->landing_page_section_id)
+            : null;
+
+        if ($section) {
+            $schema = app(LandingFormService::class)->normalizeFormContent($section->content ?? []);
+
+            foreach ($schema['fields'] as $field) {
+                $labels[$field['key']] = $field['label'];
+            }
+        }
+
+        return collect($payload)
+            ->map(function (mixed $value, string $key) use ($labels): string {
+                if (is_bool($value)) {
+                    $value = $value ? 'Так' : 'Ні';
+                }
+
+                $label = $labels[$key] ?? $key;
+
+                return '<strong>'.e($label).':</strong> '.e((string) $value);
+            })
+            ->implode('<br>');
     }
 }

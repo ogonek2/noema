@@ -42,4 +42,22 @@ class FormSubmission extends Model
             $this->forceFill(['read_at' => now()])->save();
         }
     }
+
+    /** @return array<string, mixed> */
+    public function payloadArray(): array
+    {
+        $payload = $this->getAttribute('payload');
+
+        if (is_array($payload)) {
+            return $payload;
+        }
+
+        if (is_string($payload) && $payload !== '') {
+            $decoded = json_decode($payload, true);
+
+            return is_array($decoded) ? $decoded : [];
+        }
+
+        return [];
+    }
 }
