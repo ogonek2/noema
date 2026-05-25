@@ -47,6 +47,40 @@ class BunnyStorageService
         return $response->successful();
     }
 
+    public function exists(string $path): bool
+    {
+        $normalized = ltrim($path, '/');
+        $directory = trim(dirname($normalized), '.');
+        $fileName = basename($normalized);
+
+        if ($fileName === '' || $fileName === '.') {
+            return false;
+        }
+
+        $items = $this->list($directory === '' ? '' : $directory.'/');
+
+        foreach ($items as $item) {
+            if (($item['ObjectName'] ?? null) === $fileName && ! ($item['IsDirectory'] ?? false)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function mimeTypeForPath(string $path): string
+    {
+        return match (strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
+            'jpg', 'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+            'gif' => 'image/gif',
+            'svg' => 'image/svg+xml',
+            'pdf' => 'application/pdf',
+            default => 'application/octet-stream',
+        };
+    }
+
     public function publicUrl(string $path): string
     {
         $cdnBase = rtrim((string) config('services.bunny.cdn_url', ''), '/');
@@ -68,13 +102,19 @@ class BunnyStorageService
             throw new RuntimeException('Bunny credentials are not configured.');
         }
 
-        return Http::baseUrl($apiBase.'/'.$storageName)
+        $request = Http::baseUrl($apiBase.'/'.$storageName)
             ->withHeaders(['AccessKey' => $accessKey, 'Accept' => 'application/json'])
             ->retry(
                 (int) config('services.bunny.retry_times', 3),
                 (int) config('services.bunny.retry_sleep_ms', 300)
             )
             ->timeout((int) config('services.bunny.timeout', 20));
+
+        if (! config('services.bunny.verify_ssl', true)) {
+            $request = $request->withoutVerifying();
+        }
+
+        return $request;
     }
 
     private function buildPath(string $path): string

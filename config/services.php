@@ -35,6 +35,26 @@ return [
         ],
     ],
 
+    'nova_poshta' => [
+        'api_key' => env('NOVA_POSHTA_API_KEY'),
+        'api_url' => env('NOVA_POSHTA_API_URL', 'https://api.novaposhta.ua/v2.0/json/'),
+        'timeout' => (int) env('NOVA_POSHTA_TIMEOUT', 20),
+        'verify_ssl' => filter_var(env('NOVA_POSHTA_VERIFY_SSL', env('APP_ENV') === 'production'), FILTER_VALIDATE_BOOLEAN),
+    ],
+
+    'liqpay' => [
+        'public_key' => env('LIQPAY_PUBLIC_KEY'),
+        'private_key' => env('LIQPAY_PRIVATE_KEY'),
+        'sandbox' => filter_var(env('LIQPAY_SANDBOX', true), FILTER_VALIDATE_BOOLEAN),
+        'currency' => env('LIQPAY_CURRENCY', 'UAH'),
+        'checkout_url' => env('LIQPAY_CHECKOUT_URL', 'https://www.liqpay.ua/api/3/checkout'),
+    ],
+
+    'telegram' => [
+        // On local OpenServer/XAMPP, cURL may fail with "self-signed certificate in chain".
+        'verify_ssl' => filter_var(env('TELEGRAM_VERIFY_SSL', env('APP_ENV') === 'production'), FILTER_VALIDATE_BOOLEAN),
+    ],
+
     'bunny' => [
         'storage_name' => env('BUNNY_STORAGE_NAME'),
         'storage_password' => env('BUNNY_STORAGE_PASSWORD'),
@@ -44,6 +64,8 @@ return [
         'timeout' => (int) env('BUNNY_TIMEOUT_SECONDS', 20),
         'retry_times' => (int) env('BUNNY_RETRY_TIMES', 3),
         'retry_sleep_ms' => (int) env('BUNNY_RETRY_SLEEP_MS', 300),
+        // On local OpenServer/XAMPP, cURL may fail with "self-signed certificate in chain".
+        'verify_ssl' => env('BUNNY_VERIFY_SSL', env('APP_ENV') === 'production'),
     ],
 
 ];
