@@ -416,6 +416,33 @@ class HomepageContentService
                 'partners_title' => 'Партнери',
                 'partners_address' => 'Вул. Жилянська 107. Вхід біля пиріжкової «Тітка Клара» — 2 поверх',
                 'copyright' => 'Всі права захищені NOEMA',
+                'footer_groups' => [
+                    [
+                        'title' => 'Навігатор',
+                        'items' => array_map(fn (array $item): array => [
+                            'type' => 'link',
+                            'label' => $item['label'],
+                            'href' => $item['href'],
+                            'new_tab' => false,
+                        ], $this->defaultNavigatorLinks()),
+                    ],
+                    [
+                        'title' => 'Контакти',
+                        'items' => [
+                            ['type' => 'link', 'label' => '+380 (99) 999 99-99', 'href' => 'tel:380999999999', 'new_tab' => false],
+                            ['type' => 'link', 'label' => '+380 (99) 999 99-99', 'href' => 'tel:380999999999', 'new_tab' => false],
+                            ['type' => 'link', 'label' => 'office@email.com', 'href' => 'mailto:office@email.com', 'new_tab' => false],
+                            ['type' => 'text', 'label' => 'Офіс', 'href' => '', 'new_tab' => false],
+                            ['type' => 'text', 'label' => 'Вул. Гетьмана Сагайдачного, 15-Б — Корпус А, Кв-1234', 'href' => '', 'new_tab' => false],
+                        ],
+                    ],
+                ],
+                'footer_bottom_items' => [
+                    ['type' => 'link', 'label' => 'Публічна оферта', 'href' => '#', 'new_tab' => false],
+                    ['type' => 'link', 'label' => 'Умови використання', 'href' => '#', 'new_tab' => false],
+                    ['type' => 'link', 'label' => 'Умови повернення', 'href' => '#', 'new_tab' => false],
+                    ['type' => 'link', 'label' => 'Політика конфіденційності', 'href' => '#', 'new_tab' => false],
+                ],
                 'legal_links' => [
                     ['label' => 'Публічна оферта', 'href' => '#'],
                     ['label' => 'Умови використання', 'href' => '#'],

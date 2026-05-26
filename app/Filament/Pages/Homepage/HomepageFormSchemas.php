@@ -406,25 +406,76 @@ class HomepageFormSchemas
 
                         Section::make('Посилання')
                             ->schema([
-                                Repeater::make('legal_links')
-                                    ->label('Юридичні')
+                                Repeater::make('footer_groups')
+                                    ->label('Групи в правих колонках')
                                     ->schema([
-                                        TextInput::make('label')->label('Текст')->required(),
-                                        TextInput::make('href')->label('URL')->required(),
+                                        TextInput::make('title')->label('Заголовок групи')->required(),
+                                        Repeater::make('items')
+                                            ->label('Елементи групи')
+                                            ->schema([
+                                                Select::make('type')
+                                                    ->label('Тип')
+                                                    ->options([
+                                                        'link' => 'Посилання',
+                                                        'text' => 'Текст',
+                                                    ])
+                                                    ->default('link')
+                                                    ->required()
+                                                    ->live(),
+                                                TextInput::make('label')
+                                                    ->label('Текст')
+                                                    ->required()
+                                                    ->columnSpanFull(),
+                                                TextInput::make('href')
+                                                    ->label('URL')
+                                                    ->placeholder('/catalog')
+                                                    ->visible(fn (callable $get): bool => $get('type') === 'link'),
+                                                Toggle::make('new_tab')
+                                                    ->label('Відкривати в новій вкладці')
+                                                    ->default(false)
+                                                    ->visible(fn (callable $get): bool => $get('type') === 'link'),
+                                            ])
+                                            ->columns(2)
+                                            ->collapsible()
+                                            ->itemLabel(fn (array $state): string => $state['label'] ?? 'Елемент')
+                                            ->addActionLabel('Додати елемент')
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->columns(1)
+                                    ->collapsible()
+                                    ->itemLabel(fn (array $state): string => $state['title'] ?? 'Група')
+                                    ->addActionLabel('Додати групу')
+                                    ->columnSpanFull(),
+                                Repeater::make('footer_bottom_items')
+                                    ->label('Нижній рядок (праворуч)')
+                                    ->schema([
+                                        Select::make('type')
+                                            ->label('Тип')
+                                            ->options([
+                                                'link' => 'Посилання',
+                                                'text' => 'Текст',
+                                            ])
+                                            ->default('link')
+                                            ->required()
+                                            ->live(),
+                                        TextInput::make('label')
+                                            ->label('Текст')
+                                            ->required()
+                                            ->columnSpanFull(),
+                                        TextInput::make('href')
+                                            ->label('URL')
+                                            ->visible(fn (callable $get): bool => $get('type') === 'link'),
+                                        Toggle::make('new_tab')
+                                            ->label('Відкривати в новій вкладці')
+                                            ->default(false)
+                                            ->visible(fn (callable $get): bool => $get('type') === 'link'),
                                     ])
                                     ->columns(2)
-                                    ->addActionLabel('Додати')
+                                    ->collapsible()
+                                    ->itemLabel(fn (array $state): string => $state['label'] ?? 'Елемент')
+                                    ->addActionLabel('Додати пункт')
                                     ->columnSpanFull(),
-                                Repeater::make('navigator_links')
-                                    ->label('Навігатор у футері')
-                                    ->schema([
-                                        TextInput::make('label')->label('Текст')->required(),
-                                        TextInput::make('href')->label('URL')->required(),
-                                    ])
-                                    ->columns(2)
-                                    ->addActionLabel('Додати')
-                                    ->columnSpanFull(),
-                            ])
+                            ]),
                     ])
                     ->columnSpanFull(),
             ]);
