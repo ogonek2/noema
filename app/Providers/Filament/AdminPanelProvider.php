@@ -2,11 +2,18 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\CdnBrowser;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Pages\ManageCheckoutSettings;
+use App\Filament\Pages\ManageConsultationForm;
+use App\Filament\Pages\ManageFormSettings;
+use App\Filament\Pages\ManageHomepage;
+use App\Filament\Pages\ManageNovaPoshtaSettings;
+use App\Filament\Pages\ManageSiteSeo;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -45,6 +52,13 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
+                ManageHomepage::class,
+                ManageSiteSeo::class,
+                ManageCheckoutSettings::class,
+                ManageNovaPoshtaSettings::class,
+                ManageFormSettings::class,
+                ManageConsultationForm::class,
+                CdnBrowser::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
