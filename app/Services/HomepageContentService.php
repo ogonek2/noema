@@ -169,7 +169,13 @@ class HomepageContentService
         $block = $this->block($slug);
 
         if (! $block->is_active) {
-            return $this->defaultBlockContent($slug);
+            return $slug === HomepageBlockSlug::Footer
+                ? []
+                : $this->defaultBlockContent($slug);
+        }
+
+        if ($slug === HomepageBlockSlug::Footer) {
+            return $this->normalizeBlockContent($block->content ?? []);
         }
 
         return $this->normalizeBlockContent(
@@ -402,54 +408,15 @@ class HomepageContentService
                 'made_with' => 'Made with Noema',
             ],
             HomepageBlockSlug::Footer => [
-                'description' => "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
-                'cta_primary' => 'Обрати костюм',
+                'description' => '',
+                'cta_primary' => '',
                 'cta_primary_href' => '',
-                'cta_secondary' => 'Консультація',
+                'cta_secondary' => '',
                 'cta_secondary_href' => '',
-                'made_with' => 'Made with Noema',
-                'phone_1' => '+380 (99) 999 99-99',
-                'phone_2' => '+380 (99) 999 99-99',
-                'email' => 'office@email.com',
-                'office_title' => 'Офіс',
-                'office_address' => 'Вул. Гетьмана Сагайдачного, 15-Б — Корпус А, Кв-1234',
-                'partners_title' => 'Партнери',
-                'partners_address' => 'Вул. Жилянська 107. Вхід біля пиріжкової «Тітка Клара» — 2 поверх',
-                'copyright' => 'Всі права захищені NOEMA',
-                'footer_groups' => [
-                    [
-                        'title' => 'Навігатор',
-                        'items' => array_map(fn (array $item): array => [
-                            'type' => 'link',
-                            'label' => $item['label'],
-                            'href' => $item['href'],
-                            'new_tab' => false,
-                        ], $this->defaultNavigatorLinks()),
-                    ],
-                    [
-                        'title' => 'Контакти',
-                        'items' => [
-                            ['type' => 'link', 'label' => '+380 (99) 999 99-99', 'href' => 'tel:380999999999', 'new_tab' => false],
-                            ['type' => 'link', 'label' => '+380 (99) 999 99-99', 'href' => 'tel:380999999999', 'new_tab' => false],
-                            ['type' => 'link', 'label' => 'office@email.com', 'href' => 'mailto:office@email.com', 'new_tab' => false],
-                            ['type' => 'text', 'label' => 'Офіс', 'href' => '', 'new_tab' => false],
-                            ['type' => 'text', 'label' => 'Вул. Гетьмана Сагайдачного, 15-Б — Корпус А, Кв-1234', 'href' => '', 'new_tab' => false],
-                        ],
-                    ],
-                ],
-                'footer_bottom_items' => [
-                    ['type' => 'link', 'label' => 'Публічна оферта', 'href' => '#', 'new_tab' => false],
-                    ['type' => 'link', 'label' => 'Умови використання', 'href' => '#', 'new_tab' => false],
-                    ['type' => 'link', 'label' => 'Умови повернення', 'href' => '#', 'new_tab' => false],
-                    ['type' => 'link', 'label' => 'Політика конфіденційності', 'href' => '#', 'new_tab' => false],
-                ],
-                'legal_links' => [
-                    ['label' => 'Публічна оферта', 'href' => '#'],
-                    ['label' => 'Умови використання', 'href' => '#'],
-                    ['label' => 'Умови повернення', 'href' => '#'],
-                    ['label' => 'Політика конфіденційності', 'href' => '#'],
-                ],
-                'navigator_links' => $this->defaultNavigatorLinks(),
+                'made_with' => '',
+                'copyright' => '',
+                'footer_groups' => [],
+                'footer_bottom_items' => [],
             ],
             HomepageBlockSlug::Navigator => [
                 'links' => [

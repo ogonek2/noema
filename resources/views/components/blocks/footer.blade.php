@@ -1,5 +1,4 @@
 @props([
-    'catalogs' => collect(),
     'content' => [],
 ])
 
@@ -13,69 +12,13 @@
         ->values()
         ->all();
 
-    $description = $content['description'] ?? null;
-
-    $ctaPrimary = $content['cta_primary'] ?? null;
-    $ctaPrimaryHref = $content['cta_primary_href'] ?? null;
-
-    $ctaSecondary = $content['cta_secondary'] ?? null;
-    $ctaSecondaryHref = $content['cta_secondary_href'] ?? null;
-
-    $madeWith = $content['made_with'] ?? null;
-
-    $phone1 = $content['phone_1'] ?? null;
-    $phone2 = $content['phone_2'] ?? null;
-
-    $email = $content['email'] ?? null;
-
-    $officeTitle = $content['office_title'] ?? null;
-    $officeAddress = $content['office_address'] ?? null;
-
-    $partnersTitle = $content['partners_title'] ?? null;
-    $partnersAddress = $content['partners_address'] ?? null;
-
-    $copyright = $content['copyright'] ?? null;
-
-    if ($footerGroups === []) {
-        $navigatorLinks = collect($content['navigator_links'] ?? [])
-            ->filter(fn ($item) => filled($item['label'] ?? null))
-            ->values()
-            ->all();
-        $catalogLinks = $catalogs->map(fn ($catalog) => [
-            'label' => $catalog->name,
-            'href' => route('catalog.show', $catalog),
-            'type' => 'link',
-            'new_tab' => false,
-        ])->all();
-        $contactsGroupItems = collect([
-            ['type' => 'link', 'label' => $phone1, 'href' => $phone1 ? 'tel:'.preg_replace('/\D+/', '', $phone1) : null],
-            ['type' => 'link', 'label' => $phone2, 'href' => $phone2 ? 'tel:'.preg_replace('/\D+/', '', $phone2) : null],
-            ['type' => 'link', 'label' => $email, 'href' => $email ? 'mailto:'.$email : null],
-            ['type' => 'text', 'label' => $officeTitle],
-            ['type' => 'text', 'label' => $officeAddress],
-            ['type' => 'text', 'label' => $partnersTitle],
-            ['type' => 'text', 'label' => $partnersAddress],
-        ])->filter(fn ($item) => filled($item['label'] ?? null))->values()->all();
-
-        $footerGroups = array_values(array_filter([
-            ! empty($navigatorLinks) ? ['title' => 'Навігатор', 'items' => $navigatorLinks] : null,
-            ! empty($catalogLinks) ? ['title' => 'Каталог', 'items' => $catalogLinks] : null,
-            ! empty($contactsGroupItems) ? ['title' => 'Контакти', 'items' => $contactsGroupItems] : null,
-        ]));
-    }
-
-    if ($footerBottomItems === []) {
-        $footerBottomItems = collect($content['legal_links'] ?? [])
-            ->map(fn ($link) => [
-                'type' => 'link',
-                'label' => $link['label'] ?? null,
-                'href' => $link['href'] ?? null,
-                'new_tab' => false,
-            ])
-            ->filter(fn ($item) => filled($item['label'] ?? null))
-            ->values()
-            ->all();
-    }
+    $description = filled($content['description'] ?? null) ? $content['description'] : null;
+    $ctaPrimary = filled($content['cta_primary'] ?? null) ? $content['cta_primary'] : null;
+    $ctaPrimaryHref = filled($content['cta_primary_href'] ?? null) ? $content['cta_primary_href'] : null;
+    $ctaSecondary = filled($content['cta_secondary'] ?? null) ? $content['cta_secondary'] : null;
+    $ctaSecondaryHref = filled($content['cta_secondary_href'] ?? null) ? $content['cta_secondary_href'] : null;
+    $madeWith = filled($content['made_with'] ?? null) ? $content['made_with'] : null;
+    $copyright = filled($content['copyright'] ?? null) ? $content['copyright'] : null;
 @endphp
 
 <footer id="site-footer"

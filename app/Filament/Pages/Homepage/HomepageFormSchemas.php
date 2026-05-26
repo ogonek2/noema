@@ -388,19 +388,7 @@ class HomepageFormSchemas
                                     ->label('Кнопка 2 · посилання')
                                     ->placeholder('/catalog'),
                                 TextInput::make('made_with')->label('Made with'),
-                            ])
-                            ->columns(2),
-
-                        Section::make('Контакти')
-                            ->schema([
-                                TextInput::make('phone_1')->label('Телефон 1'),
-                                TextInput::make('phone_2')->label('Телефон 2'),
-                                TextInput::make('email')->label('Email'),
-                                TextInput::make('office_title')->label('Офіс · заголовок'),
-                                Textarea::make('office_address')->label('Офіс · адреса')->rows(2),
-                                TextInput::make('partners_title')->label('Партнери · заголовок'),
-                                Textarea::make('partners_address')->label('Партнери · адреса')->rows(2),
-                                TextInput::make('copyright')->label('Копірайт'),
+                                TextInput::make('copyright')->label('Копірайт')->columnSpanFull(),
                             ])
                             ->columns(2),
 

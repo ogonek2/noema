@@ -9,5 +9,5 @@
     <x-blocks.reviews :items="$reviews" />
     <x-blocks.ribbon :gallery="$ribbonGallery" />
     <x-blocks.statement :spotlight="$spotlightProduct" :content="$statement" />
-    <x-blocks.footer :catalogs="$catalogs" :content="$footerContent" />
+    <x-blocks.footer :content="$footerContent" />
 @endsection

@@ -16,6 +16,6 @@
     @endforelse
 
     @if ($page->show_footer)
-        <x-blocks.footer :catalogs="$catalogs" :content="$footerContent" />
+        <x-blocks.footer :content="$footerContent" />
     @endif
 @endsection

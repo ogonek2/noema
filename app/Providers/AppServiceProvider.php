@@ -4,10 +4,10 @@ namespace App\Providers;
 
 use App\Enums\HomepageBlockSlug;
 use App\Filesystem\BunnyFilesystemAdapter;
+use App\Models\FormSettings;
 use App\Services\BunnyStorageService;
 use App\Services\CartService;
 use App\Services\HomepageContentService;
-use App\Models\FormSettings;
 use App\Services\SiteSeoService;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Schema;
@@ -33,6 +33,16 @@ class AppServiceProvider extends ServiceProvider
                 'cartCount' => app(CartService::class)->count(),
                 'navContent' => $homepage->blockContent(HomepageBlockSlug::Navigator),
             ]);
+        });
+
+        View::composer('components.blocks.footer', function ($view): void {
+            $data = $view->getData();
+
+            if (! empty($data['content'])) {
+                return;
+            }
+
+            $view->with('content', app(HomepageContentService::class)->blockContent(HomepageBlockSlug::Footer));
         });
 
         View::composer('layouts.app', function ($view): void {

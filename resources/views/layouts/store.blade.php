@@ -13,7 +13,7 @@
         </div>
     </section>
 
-    <x-blocks.footer :catalogs="$footerCatalogs ?? collect()" />
+    <x-blocks.footer />
 
     @stack('scripts')
 @endsection
