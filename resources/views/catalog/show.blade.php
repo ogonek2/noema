@@ -39,7 +39,7 @@
             <p class="text-[0.82rem] uppercase tracking-[0.18em] text-black-brand/50">У каталозі поки немає товарів</p>
         </div>
     @else
-        <div class="grid gap-[1px] bg-black-brand/10 sm:grid-cols-2 lg:grid-cols-3" data-aos="fade-up" data-aos-delay="120">
+        <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6" data-aos="fade-up" data-aos-delay="120">
             @foreach ($products as $product)
                 <x-ui.product-card :product="$product" class="min-h-[420px]" />
             @endforeach

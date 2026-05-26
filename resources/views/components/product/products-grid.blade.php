@@ -16,7 +16,7 @@
                 </a>
             @endif
         </div>
-        <div class="grid gap-[1px] bg-black-brand/10 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
             @foreach ($products as $relatedProduct)
                 <x-ui.product-card :product="$relatedProduct" />
             @endforeach
