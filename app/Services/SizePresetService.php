@@ -60,7 +60,7 @@ class SizePresetService
                 foreach ($preset->variants as $variant) {
                     $product->variants()->create([
                         'sku' => $this->buildVariantSku($product, $variant),
-                        'name' => $variant->size,
+                        'name' => $product->name.' / '.$variant->size,
                         'size' => $variant->size,
                         'length' => $variant->length,
                         'price' => $product->price,
