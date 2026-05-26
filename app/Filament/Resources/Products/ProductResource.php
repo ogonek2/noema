@@ -14,6 +14,7 @@ use App\Filament\Resources\Products\RelationManagers\SizeChartRelationManager;
 use App\Filament\Resources\Products\RelationManagers\VariantsRelationManager;
 use App\Models\Catalog;
 use App\Models\Product;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -67,7 +68,11 @@ class ProductResource extends Resource
                         ->helperText('Один slug для всіх кольорів однієї моделі (напр. celestia)'),
                     TextInput::make('color_name')->label('Колір'),
                     TextInput::make('color_slug')->label('Slug кольору'),
-                    TextInput::make('color_hex')->label('HEX кольору')->placeholder('#1A1A1A'),
+                    ColorPicker::make('color_hex')
+                        ->label('HEX кольору')
+                        ->helperText('Можна вибрати з палетки (у деяких браузерах є піпетка). Значення зберігається як HEX.')
+                        ->formatStateUsing(fn ($state) => filled($state) ? strtoupper((string) $state) : null)
+                        ->dehydrateStateUsing(fn ($state) => filled($state) ? strtolower((string) $state) : null),
                     TextInput::make('name')
                         ->label('Назва')
                         ->required()
