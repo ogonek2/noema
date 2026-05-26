@@ -41,3 +41,9 @@ Route::post('/checkout/liqpay/callback', [CheckoutController::class, 'liqPayCall
 
 Route::get('/api/nova-poshta/cities', [NovaPoshtaController::class, 'cities'])->name('nova-poshta.cities');
 Route::get('/api/nova-poshta/warehouses', [NovaPoshtaController::class, 'warehouses'])->name('nova-poshta.warehouses');
+
+// Safety net: avoid 500s in Filament sidebar/nav if routes cache is stale after deploy.
+if (! Route::has('filament.admin.pages.manage-consultation-form')) {
+    Route::get('/admin/manage-consultation-form', fn () => redirect('/admin/manage-consultation-form'))
+        ->name('filament.admin.pages.manage-consultation-form');
+}
