@@ -1,11 +1,7 @@
+import { formatUah } from './price-format';
+
 const MAX_BATCH = 50;
 const MIN_BATCH = 2;
-
-const formatUah = (amount) => {
-    const value = Number(amount) || 0;
-
-    return `${new Intl.NumberFormat('uk-UA', { maximumFractionDigits: 0 }).format(value)} ₴`;
-};
 
 const escapeHtml = (value) =>
     String(value ?? '')

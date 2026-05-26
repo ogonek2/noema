@@ -1,10 +1,5 @@
 import { mountProductGallery } from './product-gallery';
-
-const formatUah = (amount) => {
-    const value = Number(amount) || 0;
-
-    return `${new Intl.NumberFormat('uk-UA', { maximumFractionDigits: 0 }).format(value)} ₴`;
-};
+import { formatUah } from './price-format';
 
 const setText = (id, value, fallback = '') => {
     const el = document.getElementById(id);

@@ -49,8 +49,8 @@
                     {{ $product->subtitle }}
                 </p>
 
-                <div class="mt-6 flex flex-wrap items-baseline gap-3" id="product-price-wrap">
-                    <p class="text-[1.35rem] tracking-[0.08em]" id="product-price">
+                <div class="mt-6 flex flex-wrap items-baseline justify-start gap-3" id="product-price-wrap">
+                    <p class="w-fit whitespace-nowrap text-[1.35rem] tracking-[0.08em] tabular-nums" id="product-price">
                         {{ PriceFormat::uah($product->price) }}
                     </p>
                     <p class="text-[0.95rem] tracking-[0.08em] text-black-brand/35 line-through {{ $product->compare_at_price ? '' : 'hidden' }}"
