@@ -1,11 +1,17 @@
 @extends('layouts.store')
 
 @php
-    $breadcrumbs = [
-        ['label' => 'Головна', 'url' => route('home')],
-        ['label' => 'Каталог', 'url' => route('catalog.index')],
-        ['label' => $catalog->name],
-    ];
+    $singleCatalogMode = $singleCatalogMode ?? false;
+    $breadcrumbs = $singleCatalogMode
+        ? [
+            ['label' => 'Головна', 'url' => route('home')],
+            ['label' => $catalog->name],
+        ]
+        : [
+            ['label' => 'Головна', 'url' => route('home')],
+            ['label' => 'Каталог', 'url' => route('catalog.index')],
+            ['label' => $catalog->name],
+        ];
     $footerCatalogs = app(\App\Services\StorefrontService::class)->activeCatalogs();
 @endphp
 
@@ -20,10 +26,12 @@
                 <p class="mt-5 max-w-[640px] text-[1rem] leading-relaxed text-black-brand/65">{{ $catalog->description }}</p>
             @endif
         </div>
-        <a href="{{ route('catalog.index') }}"
-            class="text-[0.68rem] uppercase tracking-[0.18em] text-black-brand/50 transition hover:text-black-brand">
-            ← Усі каталоги
-        </a>
+        @unless ($singleCatalogMode)
+            <a href="{{ route('catalog.index') }}"
+                class="text-[0.68rem] uppercase tracking-[0.18em] text-black-brand/50 transition hover:text-black-brand">
+                ← Усі каталоги
+            </a>
+        @endunless
     </header>
 
     @if ($products->isEmpty())
