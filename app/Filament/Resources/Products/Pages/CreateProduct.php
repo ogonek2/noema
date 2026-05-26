@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Pages;
 
+use App\Filament\Resources\Products\Pages\Concerns\AppliesSizePreset;
 use App\Filament\Resources\Products\Pages\Concerns\HasProductDetailTabs;
 use App\Filament\Resources\Products\ProductResource;
 use App\Models\Catalog;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 
 class CreateProduct extends EditRecord
 {
+    use AppliesSizePreset;
     use HasProductDetailTabs;
 
     private const DRAFT_SESSION_KEY = 'product_create_draft_id';
@@ -105,6 +107,7 @@ class CreateProduct extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            $this->getApplySizePresetAction(),
             DeleteAction::make()
                 ->label('Скасувати')
                 ->modalHeading('Скасувати створення?')

@@ -20,6 +20,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -94,6 +95,20 @@ class ProductResource extends Resource
                     RichEditor::make('care_instructions')->label('Догляд')->columnSpanFull(),
                 ]),
                 Tab::make('Розмірна сітка')->schema([
+                    Section::make('Пресет розмірів')
+                        ->description('Оберіть пресет для посилання або натисніть «Застосувати пресет» у шапці, щоб скопіювати готову сітку та розміри. Або заповніть вкладки «Розміри» та «Розмірна сітка» вручну.')
+                        ->schema([
+                            Select::make('size_preset_id')
+                                ->label('Підключений пресет')
+                                ->relationship(
+                                    'sizePreset',
+                                    'name',
+                                    fn ($query) => $query->active()->orderBy('sort_order')->orderBy('name'),
+                                )
+                                ->searchable()
+                                ->nullable()
+                                ->helperText('Посилання на пресет. Дані копіюються окремою дією — можна редагувати вручну після застосування.'),
+                        ]),
                     Textarea::make('size_chart_intro')->label('Вступ до таблиці розмірів')->rows(3)->columnSpanFull(),
                     Textarea::make('length_guide')->label('Рекомендації по довжині (Petite / Regular / Tall)')->rows(4)->columnSpanFull(),
                 ]),
@@ -122,6 +137,7 @@ class ProductResource extends Resource
                 TextColumn::make('name')->label('Назва')->searchable()->sortable(),
                 TextColumn::make('sku')->label('SKU')->searchable(),
                 TextColumn::make('catalog.name')->label('Каталог')->sortable(),
+                TextColumn::make('sizePreset.name')->label('Пресет')->toggleable(),
                 TextColumn::make('color_name')->label('Колір'),
                 TextColumn::make('model_slug')->label('Модель'),
                 TextColumn::make('price')->label('Ціна')->money('UAH'),

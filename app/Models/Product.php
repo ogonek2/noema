@@ -36,6 +36,7 @@ class Product extends Model
         'care_instructions',
         'size_chart_intro',
         'length_guide',
+        'size_preset_id',
         'is_active',
         'is_featured',
         'sort_order',
@@ -90,6 +91,11 @@ class Product extends Model
     public function sizeChartRows(): HasMany
     {
         return $this->hasMany(SizeChartRow::class)->orderBy('sort_order');
+    }
+
+    public function sizePreset(): BelongsTo
+    {
+        return $this->belongsTo(SizePreset::class);
     }
 
     public function relations(): HasMany

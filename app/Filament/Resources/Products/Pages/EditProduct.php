@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Pages;
 
+use App\Filament\Resources\Products\Pages\Concerns\AppliesSizePreset;
 use App\Filament\Resources\Products\Pages\Concerns\HasProductDetailTabs;
 use App\Filament\Resources\Products\ProductResource;
 use Filament\Actions\DeleteAction;
@@ -11,6 +12,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditProduct extends EditRecord
 {
+    use AppliesSizePreset;
     use HasProductDetailTabs;
 
     protected static string $resource = ProductResource::class;
@@ -18,6 +20,7 @@ class EditProduct extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            $this->getApplySizePresetAction(),
             DeleteAction::make(),
             ForceDeleteAction::make(),
             RestoreAction::make(),
